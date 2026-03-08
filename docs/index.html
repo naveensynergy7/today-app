@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Today — One list. This day. Nothing else.</title>
+  <meta name="description" content="A simple task app: one list for today, rollover for tomorrow. No accounts, no sync. Focus on what matters now.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FAFAFC;
+      --surface: #FFFFFF;
+      --text: #1E293B;
+      --text-muted: #64748B;
+      --primary: #6366F1;
+      --border: #E2E8F0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.5rem;
+      color: var(--text);
+    }
+    .tagline {
+      font-size: 1.125rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+    .card {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--border);
+    }
+    .card h2 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin: 0 0 0.75rem;
+      color: var(--text);
+    }
+    .card p, .card ul {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.9375rem;
+    }
+    .card ul {
+      padding-left: 1.25rem;
+    }
+    .card li { margin-bottom: 0.35rem; }
+    .links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 0.9375rem;
+    }
+    .links a:hover { opacity: 0.9; }
+    .links a.secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    footer {
+      text-align: center;
+      margin-top: 2.5rem;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+    footer a { color: var(--primary); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Today</h1>
+      <p class="tagline">One list. This day. Nothing else.</p>
+    </header>
+
+    <div class="card">
+      <h2>What it is</h2>
+      <p>Today is a simple task app with one idea: <strong>what matters right now?</strong> You add a few tasks, finish what you can, and whatever’s left rolls into tomorrow. No accounts, no sync, no clutter. Everything stays on your device.</p>
+    </div>
+
+    <div class="card">
+      <h2>Features</h2>
+      <ul>
+        <li><strong>One list for today</strong> — Add, complete, and reorder tasks. No folders or priority levels.</li>
+        <li><strong>Rollover</strong> — Incomplete tasks move to the next day so you’re not carrying them in your head.</li>
+        <li><strong>Calendar</strong> — Month view with completion dots; tap a day to see its tasks.</li>
+        <li><strong>Analytics</strong> — Completion stats for today, this month, and all time.</li>
+        <li><strong>Optional reminders</strong> — Gentle nudge for your first incomplete task. Turn them off anytime.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Download</h2>
+      <p>Today is available on the App Store (iOS) and Google Play (Android). Get it and start with a single list for today.</p>
+    </div>
+
+    <div class="links">
+      <a href="https://apps.apple.com/app/today/id1234567890" target="_blank" rel="noopener">App Store</a>
+      <a href="https://play.google.com/store/apps/details?id=com.naveensingh.today" target="_blank" rel="noopener">Google Play</a>
+      <a href="privacy-policy.html" class="secondary">Privacy Policy</a>
+    </div>
+
+    <footer>
+      <p><a href="privacy-policy.html">Privacy Policy</a></p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -3,13 +3,17 @@ import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, Text, ActivityIndicator, StyleSheet, Platform } from 'react-native';
 
-// Keep native splash visible until we hide it (then hide immediately)
-SplashScreen.preventAutoHideAsync();
+// Keep native splash visible until we hide it (iOS only; no splash on Android)
+if (Platform.OS !== 'android') {
+  SplashScreen.preventAutoHideAsync();
+}
+
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View, Text, ActivityIndicator, StyleSheet, Platform } from 'react-native';
+import { createBottomTabNavigator, BottomTabBar } from '@react-navigation/bottom-tabs';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { initDb, rolloverIncompleteTasks, getYesterdayDate } from './src/db/database';
 import { requestPermissions } from './src/notifications/reminders';
@@ -23,6 +27,27 @@ import SettingsScreen from './src/screens/SettingsScreen';
 const ONBOARDING_KEY = 'onboardingDone';
 
 const Tab = createBottomTabNavigator();
+
+// Fallback when safe-area-context reports 0 on Android (common on Samsung, Android 15+)
+const ANDROID_NAV_BAR_FALLBACK = 40;
+
+function TabBarWithSafeArea(props) {
+  const insets = useSafeAreaInsets();
+  const bottomInset =
+    Platform.OS === 'android'
+      ? Math.max(insets.bottom, ANDROID_NAV_BAR_FALLBACK)
+      : insets.bottom;
+
+  if (Platform.OS !== 'android' || bottomInset === 0) {
+    return <BottomTabBar {...props} />;
+  }
+
+  return (
+    <View style={{ paddingBottom: bottomInset, backgroundColor: colors.surface, overflow: 'visible' }}>
+      <BottomTabBar {...props} />
+    </View>
+  );
+}
 
 function TabIcon({ name, focused }) {
   const map = {
@@ -70,7 +95,7 @@ export default function App() {
     return () => { cancelled = true; };
   }, []);
 
-  // Hide native splash as soon as we're about to render (any screen)
+  // Hide native splash as soon as app has mounted (both platforms)
   useEffect(() => {
     SplashScreen.hideAsync();
   }, []);
@@ -118,41 +143,45 @@ export default function App() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused }) => <TabIcon name={route?.name ?? 'Today'} focused={focused} />,
-            tabBarActiveTintColor: colors.primary,
-            tabBarInactiveTintColor: colors.textMuted,
-            tabBarLabelStyle: { fontSize: 12, fontWeight: '500' },
-            tabBarStyle: {
-              backgroundColor: colors.surface,
-              borderTopColor: colors.borderLight,
-              borderTopWidth: 1,
-              paddingTop: 10,
-              height: Platform.OS === 'ios' ? 88 : 68,
-              ...Platform.select({
-                ios: {
-                  shadowColor: '#1E293B',
-                  shadowOffset: { width: 0, height: -4 },
-                  shadowOpacity: 0.06,
-                  shadowRadius: 12,
-                },
-                android: { elevation: 12 },
-              }),
-            },
-            headerShown: false,
-          })}
-        >
-          <Tab.Screen name="Today" component={TodayScreen} />
-          <Tab.Screen name="Calendar" component={CalendarScreen} />
-          <Tab.Screen name="Analytics" component={AnalyticsScreen} />
-          <Tab.Screen name="Settings" component={SettingsScreen} />
-        </Tab.Navigator>
-      </NavigationContainer>
-      <StatusBar style="dark" />
-    </GestureHandlerRootView>
+    <SafeAreaProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <NavigationContainer>
+          <Tab.Navigator
+            tabBar={(props) => <TabBarWithSafeArea {...props} />}
+            screenOptions={({ route }) => ({
+              tabBarIcon: ({ focused }) => <TabIcon name={route?.name ?? 'Today'} focused={focused} />,
+              tabBarShowLabel: true,
+              tabBarActiveTintColor: colors.primary,
+              tabBarInactiveTintColor: colors.textMuted,
+              tabBarLabelStyle: { fontSize: 12, fontWeight: '500' },
+              tabBarStyle: {
+                backgroundColor: colors.surface,
+                borderTopColor: colors.borderLight,
+                borderTopWidth: 1,
+                paddingTop: 10,
+                height: Platform.OS === 'ios' ? 88 : 80,
+                ...Platform.select({
+                  ios: {
+                    shadowColor: '#1E293B',
+                    shadowOffset: { width: 0, height: -4 },
+                    shadowOpacity: 0.06,
+                    shadowRadius: 12,
+                  },
+                  android: { elevation: 12 },
+                }),
+              },
+              headerShown: false,
+            })}
+          >
+            <Tab.Screen name="Today" component={TodayScreen} />
+            <Tab.Screen name="Calendar" component={CalendarScreen} />
+            <Tab.Screen name="Analytics" component={AnalyticsScreen} />
+            <Tab.Screen name="Settings" component={SettingsScreen} />
+          </Tab.Navigator>
+        </NavigationContainer>
+        <StatusBar style="dark" />
+      </GestureHandlerRootView>
+    </SafeAreaProvider>
   );
 }
 

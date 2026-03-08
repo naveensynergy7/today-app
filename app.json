@@ -8,14 +8,17 @@
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.today"
+      "bundleIdentifier": "com.naveensingh.today",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#6366F1",
         "foregroundImage": "./assets/icon.png"
       },
-      "package": "com.anonymous.today"
+      "package": "com.naveensingh.today"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -24,6 +27,11 @@
       "expo-sqlite",
       "expo-notifications",
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "59c41d67-dfac-49a9-808f-04b8e351d10e"
+      }
+    }
   }
 }
